@@ -8,9 +8,11 @@ import logging
 import os
 import socket
 import time
+from base64 import b64decode
 
 import pika
 
+import boto3
 
 PIKA_EXCEPTIONS = (
     pika.exceptions.AMQPConnectionError,
@@ -31,6 +33,14 @@ logger.setLevel(logging.INFO)
 def get_from_env(key):
     return os.environ['PIGEON_%s' % key]
 
+def kms_decrypt(encoded_ciphertext_blob):
+    ciphertext_blob = b64decode(encoded_ciphertext_blob)
+    region = get_from_env('REGION')
+    client = boto3.client('kms', region)
+    resp = client.decrypt(
+        CiphertextBlob=ciphertext_blob,
+    )
+    return resp['Plaintext']
 
 def statsd_incr(key, val=1):
     """Sends a specially formatted line for datadog to pick up for statsd incr"""
@@ -129,9 +139,9 @@ def handler(event, context):
         connection = build_pika_connection(
             host=get_from_env('HOST'),
             port=int(get_from_env('PORT')),
-            virtual_host=get_from_env('VIRTUAL_HOST'),
+            virtual_host=kms_decrypt(get_from_env('VIRTUAL_HOST')),
             user=get_from_env('USER'),
-            password=get_from_env('PASSWORD')
+            password=kms_decrypt(get_from_env('PASSWORD'))
         )
         props = pika.BasicProperties(delivery_mode=2)
 

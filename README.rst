@@ -12,7 +12,7 @@ Quickstart
 
    .. code-block:: shell
 
-      $ git clone https://github.com/mozilla/socorro-pigeon
+      $ git clone https://github.com/mozilla-services/socorro-pigeon
 
 2. `Install docker 1.10.0+ <https://docs.docker.com/engine/installation/>`_ and
    `install docker-compose 1.6.0+ <https://docs.docker.com/compose/install/>`_

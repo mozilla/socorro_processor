@@ -150,7 +150,10 @@ def test_junk_in_stage(client, rabbitmq_helper, capsys):
 
 @pytest.mark.parametrize('data, expected', [
     # Raw crash file
-    ('v2/raw_crash/de1/20160918/de1bb258-cbbf-4589-a673-34f800160918', 'de1bb258-cbbf-4589-a673-34f800160918'),
+    (
+        'v2/raw_crash/de1/20160918/de1bb258-cbbf-4589-a673-34f800160918',
+        'de1bb258-cbbf-4589-a673-34f800160918'
+    ),
 
     # Other files that get saved in the same bucket
     ('v1/dump_names/de1bb258-cbbf-4589-a673-34f800160918', None),
@@ -161,7 +164,10 @@ def test_junk_in_stage(client, rabbitmq_helper, capsys):
     ('foo/bar/test', None),
 
     # This is a crash from -prod which currently has a 2 in the accept/defer place
-    ('v2/raw_crash/edd/20170404/edd0cf02-9e6f-443a-b098-8274b2170404', 'edd0cf02-9e6f-443a-b098-8274b2170404'),
+    (
+        'v2/raw_crash/edd/20170404/edd0cf02-9e6f-443a-b098-8274b2170404',
+        'edd0cf02-9e6f-443a-b098-8274b2170404'
+    ),
 ])
 def test_extract_crash_id(data, expected, client):
     record = client.build_crash_save_events(data)['Records'][0]

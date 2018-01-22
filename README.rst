@@ -16,7 +16,7 @@ Quickstart
 
 2. `Install docker 1.10.0+ <https://docs.docker.com/engine/installation/>`_ and
    `install docker-compose 1.6.0+ <https://docs.docker.com/compose/install/>`_
-   on your machine
+   on your machine.
 
 3. Download and build Pigeon docker containers:
 

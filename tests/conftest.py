@@ -130,7 +130,7 @@ class RabbitMQHelper:
         method_frame, header_frame, body = channel.basic_get(queue=queue)
         if method_frame:
             channel.basic_ack(delivery_tag=method_frame.delivery_tag)
-            return body
+            return body.decode('ascii')
         return None
 
 

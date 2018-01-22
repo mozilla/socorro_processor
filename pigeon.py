@@ -194,11 +194,10 @@ def extract_bucket_name(record):
     """
     try:
         return record['s3']['bucket']['name']
-    except KeyError as exc:
-        logger.exception(
-            'Exception thrown when extracting bucket name.'
-        )
+    except KeyError:
+        logger.exception('Exception thrown when extracting bucket name.')
         return None
+
 
 def extract_crash_id(record):
     """Given a record, extracts the crash id
@@ -327,7 +326,7 @@ def handler(event, context):
         statsd_incr('socorro.pigeon.pika_error', value=1)
         logger.exception('Error: amqp publish failed: %s', crash_id)
 
-    except Exeption:
+    except Exception:
         statsd_incr('socorro.pigeon.unknown_error', value=1)
         logger.exception('Error: amqp publish failed for unknown reason: %s', crash_id)
 
